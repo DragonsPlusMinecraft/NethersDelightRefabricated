@@ -1,18 +1,18 @@
 # Nether's Delight
 
-<a href="https://www.curseforge.com/minecraft/mc-mods/nethers-delight">
-  <img src="http://cf.way2muchnoise.eu/full_496394_downloads.svg" alt="Curseforge Downloads">
+<a href="https://www.curseforge.com/minecraft/mc-mods/nethers-delight-refabricated">
+  <img src="http://cf.way2muchnoise.eu/full_496394_downloads.svg" alt="CurseForge Downloads">
 </a>
-<a href="https://discord.gg/Vnw54PjFPJ">
-  <img alt="Discord" src="https://img.shields.io/discord/855495317298741248?color=brightgreen&label=Discord">
+<a href="https://discord.gg/ABgu4dHnx4">
+  <img alt="Discord" src="https://img.shields.io/discord/1084792082599772212?color=blue&label=Discord">
 </a>
 <br>
-<img src="https://i.imgur.com/Tn69SDR.png" width="50%">
+<img src="https://i.imgur.com/Tn69SDR.png" width="50%" alt="Nether's Delight Refabricated">
 
 ## Overview
 ### 📖 About
 
-**Nether's Delight** is an addon mod for [Farmer's Delight](https://www.curseforge.com/minecraft/mc-mods/farmers-delight) 
+**Nether's Delight** is an addon mod for [Farmer's Delight](https://www.curseforge.com/minecraft/mc-mods/farmers-delight-refabricated) 
 based around adding culinary content to the nether!  
 
 Using advanced hunting techniques and culinary skills, you can manage to prepare a myriad of disgusting meals and
@@ -22,7 +22,7 @@ This Addon Mod for Farmer's Delight focuses on giving more content to the Nether
 infernal creatures!
 
 ### 🔨 Required Dependencies:
-- [Farmer's Delight](https://www.curseforge.com/minecraft/mc-mods/farmers-delight)
+- [Farmer's Delight](https://www.curseforge.com/minecraft/mc-mods/farmers-delight-refabricated)
 
 ### ❔ Questions
-Join our [Discord](https://discord.gg/Vnw54PjFPJ) to ask about anything you need help with, or are confused by!
+Join our [Discord](https://discord.gg/ABgu4dHnx4) to ask about anything you need help with, or are confused by!
