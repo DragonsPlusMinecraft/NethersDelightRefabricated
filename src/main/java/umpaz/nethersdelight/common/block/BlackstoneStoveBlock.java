@@ -1,5 +1,7 @@
 package umpaz.nethersdelight.common.block;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -26,14 +28,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.Nullable;
 import umpaz.nethersdelight.common.registry.NDBlockEntityTypes;
 import vectorwing.farmersdelight.common.registry.ModDamageTypes;
 import vectorwing.farmersdelight.common.registry.ModSounds;
 import vectorwing.farmersdelight.common.utility.MathUtils;
-
-import javax.annotation.Nullable;
 
 public class BlackstoneStoveBlock extends AbstractStoveBlock {
     public static final BooleanProperty SOUL = BooleanProperty.create("soul");;
@@ -116,7 +115,7 @@ public class BlackstoneStoveBlock extends AbstractStoveBlock {
         builder.add(SOUL);
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     @Override
     public void animateTick(BlockState stateIn, Level level, BlockPos pos, RandomSource rand) {
         if (stateIn.getValue(LIT) && stateIn.getValue(SOUL)) {

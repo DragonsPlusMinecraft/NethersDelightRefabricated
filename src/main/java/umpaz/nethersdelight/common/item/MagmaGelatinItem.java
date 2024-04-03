@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import vectorwing.farmersdelight.common.item.ConsumableItem;
 
 public class MagmaGelatinItem extends ConsumableItem {
@@ -16,11 +17,13 @@ public class MagmaGelatinItem extends ConsumableItem {
 		super(properties);
 	}
 
+	@NotNull
 	@Override
 	public SoundEvent getDrinkingSound() {
 	      return SoundEvents.HONEY_DRINK;
 	   }
 
+	@NotNull
 	@Override
 	public SoundEvent getEatingSound() {
 	      return SoundEvents.HONEY_DRINK;
@@ -36,7 +39,7 @@ public class MagmaGelatinItem extends ConsumableItem {
 				this.affectConsumer(stack, worldIn, consumer);
 			}
 
-			ItemStack containerStack = stack.getCraftingRemainingItem();
+			ItemStack containerStack = stack.getRecipeRemainder();
 
 			if (stack.isEdible()) {
 				super.finishUsingItem(stack, worldIn, consumer);

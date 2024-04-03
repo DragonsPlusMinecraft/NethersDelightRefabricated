@@ -15,10 +15,9 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import umpaz.nethersdelight.common.block.entity.NetherBrickSmokerBlockEntity;
 import umpaz.nethersdelight.common.registry.NDBlockEntityTypes;
-
-import javax.annotation.Nullable;
 
 public class NetherBrickSmokerBlock extends SmokerBlock {
 

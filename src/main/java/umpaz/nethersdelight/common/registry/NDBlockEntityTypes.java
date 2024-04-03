@@ -1,9 +1,9 @@
 package umpaz.nethersdelight.common.registry;
 
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import umpaz.nethersdelight.NethersDelight;
 import umpaz.nethersdelight.common.block.entity.BlackstoneBlastFurnaceBlockEntity;
 import umpaz.nethersdelight.common.block.entity.BlackstoneFurnaceBlockEntity;
@@ -12,7 +12,7 @@ import umpaz.nethersdelight.common.block.entity.NetherBrickSmokerBlockEntity;
 
 public class NDBlockEntityTypes {
 
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, NethersDelight.MODID);
+    public static final LazyRegistrar<BlockEntityType<?>> BLOCK_ENTITY_TYPES = LazyRegistrar.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, NethersDelight.MODID);
 
     public static final RegistryObject<BlockEntityType<BlackstoneStoveBlockEntity>> BLACKSTONE_STOVE = BLOCK_ENTITY_TYPES.register("blackstone_stove",
             () -> BlockEntityType.Builder.of(BlackstoneStoveBlockEntity::new, NDBlocks.BLACKSTONE_STOVE.get()).build(null));

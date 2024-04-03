@@ -12,11 +12,13 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import umpaz.nethersdelight.NethersDelight;
 import umpaz.nethersdelight.common.registry.NDBlocks;
 import umpaz.nethersdelight.common.registry.NDItems;
@@ -26,13 +28,10 @@ import umpaz.nethersdelight.integration.jei.NDRecipeTypes;
 import umpaz.nethersdelight.integration.jei.resource.CompositionDummy;
 import vectorwing.farmersdelight.FarmersDelight;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class CompositionRecipeCategory implements IRecipeCategory<CompositionDummy>
 {
@@ -77,9 +76,17 @@ public class CompositionRecipeCategory implements IRecipeCategory<CompositionDum
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, CompositionDummy recipe, IFocusGroup focusGroup) {
-        List<ItemStack> accelerators = ForgeRegistries.BLOCKS.tags().getTag(NDTags.SOUL_COMPOST_ACTIVATORS).stream().map(ItemStack::new).collect(Collectors.toList());
-        List<ItemStack> flames = ForgeRegistries.BLOCKS.tags().getTag(NDTags.SOUL_COMPOST_FLAMES).stream().map(ItemStack::new).collect(Collectors.toList());
+    public void setRecipe(IRecipeLayoutBuilder builder, @NotNull CompositionDummy recipe, @NotNull IFocusGroup focusGroup) {
+        List<ItemStack> accelerators = BuiltInRegistries.BLOCK.getTag(NDTags.SOUL_COMPOST_ACTIVATORS)
+            .stream()
+            .flatMap(HolderSet::stream)
+            .map(holder -> new ItemStack(holder.value()))
+            .collect(Collectors.toList());
+        List<ItemStack> flames = BuiltInRegistries.BLOCK.getTag(NDTags.SOUL_COMPOST_FLAMES)
+            .stream()
+            .flatMap(HolderSet::stream)
+            .map(holder -> new ItemStack(holder.value()))
+            .collect(Collectors.toList());
 
         builder.addSlot(RecipeIngredientRole.INPUT, 9, 26).addItemStack(soulCompost);
         builder.addSlot(RecipeIngredientRole.OUTPUT, 93, 26).addItemStack(richSoulSoil);
@@ -88,13 +95,13 @@ public class CompositionRecipeCategory implements IRecipeCategory<CompositionDum
     }
 
     @Override
-    public void draw(CompositionDummy recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(@NotNull CompositionDummy recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         this.slotIcon.draw(guiGraphics, 63, 53);
         this.slotIcon.draw(guiGraphics, 37, 53);
     }
 
     @Override
-    public List<Component> getTooltipStrings(CompositionDummy recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+    public List<Component> getTooltipStrings(@NotNull CompositionDummy recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         if (inIconAt(40, 38, mouseX, mouseY)) {
             return ImmutableList.of(translateKey(".light"));
         }
@@ -119,7 +126,7 @@ public class CompositionRecipeCategory implements IRecipeCategory<CompositionDum
         return iconX <= mouseX && mouseX < iconX + 16 && iconY <= mouseY && mouseY < iconY + 19;
     }
 
-    private static MutableComponent translateKey(@Nonnull String suffix) {
+    private static MutableComponent translateKey(@NotNull String suffix) {
         return Component.translatable(NethersDelight.MODID + ".jei.composition" + suffix);
     }
 }

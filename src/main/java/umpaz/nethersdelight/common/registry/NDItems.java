@@ -1,10 +1,10 @@
 package umpaz.nethersdelight.common.registry;
 
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.*;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import umpaz.nethersdelight.NethersDelight;
 import umpaz.nethersdelight.common.item.FungusColonyItem;
 import umpaz.nethersdelight.common.item.MacheteItem;
@@ -15,7 +15,7 @@ import vectorwing.farmersdelight.common.item.ConsumableItem;
 
 public class NDItems {
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, NethersDelight.MODID);
+    public static final LazyRegistrar<Item> ITEMS = LazyRegistrar.create(BuiltInRegistries.ITEM, NethersDelight.MODID);
 
     // Workstations
     public static final RegistryObject<Item> BLACKSTONE_STOVE = ITEMS.register("blackstone_stove",

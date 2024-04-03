@@ -1,5 +1,6 @@
 package umpaz.nethersdelight.common.block;
 
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -15,16 +16,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FungusBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.Tags;
 import umpaz.nethersdelight.common.registry.NDBlocks;
 import umpaz.nethersdelight.common.tag.NDTags;
 import vectorwing.farmersdelight.common.block.MushroomColonyBlock;
@@ -39,7 +35,7 @@ public class FungusColonyBlock extends MushroomColonyBlock {
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+    public boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
         return state.is(BlockTags.NYLIUM)
                 || state.is(Blocks.MYCELIUM)
                 || state.is(Blocks.SOUL_SOIL)
@@ -79,9 +75,8 @@ public class FungusColonyBlock extends MushroomColonyBlock {
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         int age = state.getValue(COLONY_AGE);
         BlockState groundState = level.getBlockState(pos.below());
-        if (age < this.getMaxAge() && groundState.is(NDTags.FUNGUS_COLONY_GROWABLE_ON) && ForgeHooks.onCropsGrowPre(level, pos, state, random.nextInt(4) == 0)) {
+        if (age < this.getMaxAge() && groundState.is(NDTags.FUNGUS_COLONY_GROWABLE_ON) && random.nextInt(4) == 0) {
             level.setBlock(pos, state.setValue(COLONY_AGE, age + 1), 2);
-            ForgeHooks.onCropsGrowPost(level, pos, state);
         }
     }
 }

@@ -16,10 +16,7 @@ import umpaz.nethersdelight.integration.jei.category.CompositionRecipeCategory;
 import umpaz.nethersdelight.integration.jei.resource.CompositionDummy;
 import vectorwing.farmersdelight.integration.jei.FDRecipes;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 @JeiPlugin
-@ParametersAreNonnullByDefault
 @SuppressWarnings("unused")
 public class NDJEIPlugin implements IModPlugin
 {

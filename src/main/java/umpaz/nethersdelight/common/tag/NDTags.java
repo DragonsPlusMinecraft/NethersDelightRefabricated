@@ -1,10 +1,10 @@
 package umpaz.nethersdelight.common.tag;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.ForgeRegistries;
 import umpaz.nethersdelight.NethersDelight;
 
 public class NDTags {
@@ -26,10 +26,10 @@ public class NDTags {
     public static final TagKey<Item> HUNTING_TOOLS = modItemTag("tools/hunting_tools");
 
     private static TagKey<Item> modItemTag(String path) {
-        return TagKey.create(ForgeRegistries.Keys.ITEMS, new ResourceLocation(NethersDelight.MODID + ":" + path));
+        return TagKey.create(BuiltInRegistries.ITEM.key(), new ResourceLocation(NethersDelight.MODID, path));
     }
 
     private static TagKey<Block> modBlockTag(String path) {
-        return TagKey.create(ForgeRegistries.Keys.BLOCKS, new ResourceLocation(NethersDelight.MODID + ":" + path));
+        return TagKey.create(BuiltInRegistries.BLOCK.key(), new ResourceLocation(NethersDelight.MODID, path));
     }
 }

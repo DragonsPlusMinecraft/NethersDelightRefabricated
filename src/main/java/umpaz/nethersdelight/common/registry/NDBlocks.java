@@ -1,6 +1,9 @@
 package umpaz.nethersdelight.common.registry;
 
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
@@ -9,16 +12,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import umpaz.nethersdelight.NethersDelight;
 import umpaz.nethersdelight.common.block.*;
 
 import java.util.function.ToIntFunction;
 
 public class NDBlocks {
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, NethersDelight.MODID);
+    public static final LazyRegistrar<Block> BLOCKS = LazyRegistrar.create(BuiltInRegistries.BLOCK, NethersDelight.MODID);
 
     // Workstations
     public static final RegistryObject<Block> BLACKSTONE_STOVE = BLOCKS.register("blackstone_stove", () -> new BlackstoneStoveBlock(
@@ -83,7 +83,7 @@ public class NDBlocks {
             (BlockBehaviour.Properties.copy(NDBlocks.PROPELPLANT_CANE.get()).instabreak().lightLevel((light) -> 12), ParticleTypes.FLAME));
 
     public static final RegistryObject<Block> PROPELPLANT_WALL_TORCH = BLOCKS.register("propelplant_wall_torch", () -> new WallTorchBlock
-            (BlockBehaviour.Properties.copy(NDBlocks.PROPELPLANT_CANE.get()).instabreak().lootFrom(PROPELPLANT_TORCH).lightLevel((light) -> 12), ParticleTypes.FLAME));
+            (BlockBehaviour.Properties.copy(NDBlocks.PROPELPLANT_CANE.get()).instabreak().dropsLike(PROPELPLANT_TORCH.get()).lightLevel((light) -> 12), ParticleTypes.FLAME));
 
     public static ToIntFunction<BlockState> propelplantBlockEmission(int pearlLightValue) {
         return (state) -> {

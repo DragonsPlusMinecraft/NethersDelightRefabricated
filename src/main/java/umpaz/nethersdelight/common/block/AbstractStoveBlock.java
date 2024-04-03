@@ -1,5 +1,8 @@
 package umpaz.nethersdelight.common.block;
 
+import io.github.fabricators_of_create.porting_lib.tool.ToolActions;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -32,15 +35,12 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolActions;
+import org.jetbrains.annotations.Nullable;
 import umpaz.nethersdelight.common.block.entity.AbstractStoveBlockEntity;
 import vectorwing.farmersdelight.common.registry.ModDamageTypes;
 import vectorwing.farmersdelight.common.registry.ModSounds;
 import vectorwing.farmersdelight.common.utility.MathUtils;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 
 public abstract class AbstractStoveBlock extends BaseEntityBlock {
@@ -181,7 +181,7 @@ public abstract class AbstractStoveBlock extends BaseEntityBlock {
         stateBuilder.add(FACING, LIT);
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource randomSource) {
         if (state.getValue(CampfireBlock.LIT)) {
             double x = pos.getX() + 0.5;

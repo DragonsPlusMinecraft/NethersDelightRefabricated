@@ -23,18 +23,16 @@ import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import umpaz.nethersdelight.common.registry.NDItems;
 import umpaz.nethersdelight.common.utility.NDTextUtils;
 import vectorwing.farmersdelight.common.registry.ModSounds;
 import vectorwing.farmersdelight.common.tag.ModTags;
 import vectorwing.farmersdelight.common.utility.TextUtils;
-
-import javax.annotation.Nullable;
 
 public class StuffedHoglinBlock extends HorizontalDirectionalBlock {
 
@@ -220,36 +218,37 @@ public class StuffedHoglinBlock extends HorizontalDirectionalBlock {
 	}
 
 	@Override
-	public void playerWillDestroy(Level p_49505_, BlockPos p_49506_, BlockState p_49507_, Player p_49508_) {
-		if (!p_49505_.isClientSide && p_49508_.isCreative()) {
-			BedPart bedpart = p_49507_.getValue(PART);
+	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+		if (!level.isClientSide && player.isCreative()) {
+			BedPart bedpart = state.getValue(PART);
 			if (bedpart == BedPart.FOOT) {
-				BlockPos blockpos = p_49506_.relative(getDirectionToOther(bedpart, p_49507_.getValue(FACING)));
-				BlockState blockstate = p_49505_.getBlockState(blockpos);
+				BlockPos blockpos = pos.relative(getDirectionToOther(bedpart, state.getValue(FACING)));
+				BlockState blockstate = level.getBlockState(blockpos);
 				if (blockstate.is(this) && blockstate.getValue(PART) == BedPart.HEAD) {
-					p_49505_.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
-					p_49505_.levelEvent(p_49508_, 2001, blockpos, Block.getId(blockstate));
+					level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
+					level.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
 				}
 			}
 		}
 
-		super.playerWillDestroy(p_49505_, p_49506_, p_49507_, p_49508_);
+		super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Nullable
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext p_49479_) {
-		Direction direction = p_49479_.getHorizontalDirection();
-		BlockPos blockpos = p_49479_.getClickedPos();
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		Direction direction = context.getHorizontalDirection();
+		BlockPos blockpos = context.getClickedPos();
 		BlockPos blockpos1 = blockpos.relative(direction);
-		Level level = p_49479_.getLevel();
-		return level.getBlockState(blockpos1).canBeReplaced(p_49479_) && level.getWorldBorder().isWithinBounds(blockpos1) ? this.defaultBlockState().setValue(FACING, direction) : null;
+		Level level = context.getLevel();
+		return level.getBlockState(blockpos1).canBeReplaced(context) && level.getWorldBorder().isWithinBounds(blockpos1) ? this.defaultBlockState().setValue(FACING, direction) : null;
 	}
 
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.DESTROY;
-	}
+	//TODO: Find if a Fabric equivalent exists
+//	@Override
+//	public PushReaction getPistonPushReaction(BlockState state) {
+//		return PushReaction.DESTROY;
+//	}
 
 	@Override
 	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {

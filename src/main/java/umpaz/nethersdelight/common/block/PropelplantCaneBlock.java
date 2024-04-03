@@ -1,5 +1,9 @@
 package umpaz.nethersdelight.common.block;
 
+import io.github.fabricators_of_create.porting_lib.block.PlayerDestroyBlock;
+import io.github.fabricators_of_create.porting_lib.common.util.IPlantable;
+import io.github.fabricators_of_create.porting_lib.common.util.PlantType;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -19,8 +23,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.piston.PistonStructureResolver;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -30,20 +32,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.PlantType;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.event.level.PistonEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.Nullable;
-import umpaz.nethersdelight.NethersDelight;
 import umpaz.nethersdelight.common.registry.NDBlocks;
 import umpaz.nethersdelight.common.registry.NDItems;
 
-
-@Mod.EventBusSubscriber(modid = NethersDelight.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class PropelplantCaneBlock extends Block implements IPlantable, BonemealableBlock {
+public class PropelplantCaneBlock extends Block implements IPlantable, BonemealableBlock, PlayerDestroyBlock {
     public static final BooleanProperty PEARL = BooleanProperty.create("pearl");
     public static final BooleanProperty STEM = BooleanProperty.create("stem");
     public static final BooleanProperty BUD = BooleanProperty.create("bud");
@@ -105,7 +98,7 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         if (!level.isClientSide && !willHarvest) {
-            playerWillDestroy(level, pos, state, player);
+            this.playerWillDestroy(level, pos, state, player);
             explode(state, level, pos, player);
             return true;
         }
@@ -118,7 +111,7 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
             }
         }
 
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+        return PlayerDestroyBlock.super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 
     @Override
@@ -137,29 +130,29 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
         super.entityInside(state, level, pos, entity);
     }
 
-    @Override
+    //TODO: Find if a Fabric equivalent exists
     public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return true;
     }
 
-    @Override
+    //TODO: Find if a Fabric equivalent exists
     public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
         explode(state, level, pos);
     }
 
-    @Override
+    //TODO: Find if a Fabric equivalent exists
     public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         if (state.getValue(PEARL)) return 100;
         return 60;
     }
 
-    @Override
+    //TODO: Find if a Fabric equivalent exists
     public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return 100;
     }
 
-    @Override
-    public void onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable net.minecraft.core.Direction face, @javax.annotation.Nullable LivingEntity igniter) {
+    //TODO: Find if a Fabric equivalent exists
+    public void onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
         explode(state, level, pos, igniter);
     }
 
@@ -184,21 +177,21 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
         super.tick(state, level, pos, randomSource);
     }
 
-    @SubscribeEvent
-    public static void explodeOnPistonAction(final PistonEvent.Pre event) {
-        if (!(event.getLevel() instanceof Level level)) return;
-        if (level.isClientSide) return;
-
-        PistonStructureResolver structureResolver = event.getStructureHelper();
-        if (structureResolver == null) return;
-
-        structureResolver.resolve();
-        structureResolver.getToDestroy().forEach((BlockPos pos) -> {
-            BlockState posState = level.getBlockState(pos);
-            if (!(posState.getBlock() instanceof PropelplantCaneBlock propelplantCaneBlock)) return;
-            propelplantCaneBlock.explode(posState, level, pos);
-        });
-    }
+    //TODO: Implement this and maybe PR to PortingLib
+//    public static void explodeOnPistonAction(final PistonEvent.Pre event) {
+//        if (!(event.getLevel() instanceof Level level)) return;
+//        if (level.isClientSide) return;
+//
+//        PistonStructureResolver structureResolver = event.getStructureHelper();
+//        if (structureResolver == null) return;
+//
+//        structureResolver.resolve();
+//        structureResolver.getToDestroy().forEach((BlockPos pos) -> {
+//            BlockState posState = level.getBlockState(pos);
+//            if (!(posState.getBlock() instanceof PropelplantCaneBlock propelplantCaneBlock)) return;
+//            propelplantCaneBlock.explode(posState, level, pos);
+//        });
+//    }
 
     protected void explode(Level level, BlockPos pos) {
         explode(level, pos, (LivingEntity)null);
@@ -216,7 +209,8 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
         if (level.isClientSide) return;
 
         Explosion explosion = level.explode(entity, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Level.ExplosionInteraction.NONE);
-        super.onBlockExploded(state, level, pos, explosion);
+        //TODO: Find if a Fabric equivalent exists
+        //super.onBlockExploded(state, level, pos, explosion);
     }
 
     protected InteractionResult harvestPearls(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult context) {
@@ -288,12 +282,12 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
         level.setBlock(pos, state.setValue(PEARL, true), 2);
     }
 
-    @Override
+    //TODO: Find if a Fabric equivalent exists
     public @Nullable BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
         return BlockPathTypes.DAMAGE_OTHER;
     }
 
-    @Override
+    //TODO: Find if a Fabric equivalent exists
     public @Nullable BlockPathTypes getAdjacentBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob, BlockPathTypes originalType) {
         return BlockPathTypes.DAMAGE_OTHER;
     }

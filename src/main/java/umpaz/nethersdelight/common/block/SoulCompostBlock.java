@@ -1,5 +1,8 @@
 package umpaz.nethersdelight.common.block;
 
+import io.github.fabricators_of_create.porting_lib.common.util.IPlantable;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -14,8 +17,6 @@ import net.minecraft.world.level.block.FungusBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import umpaz.nethersdelight.common.registry.NDBlocks;
 import umpaz.nethersdelight.common.tag.NDTags;
 
@@ -85,8 +86,8 @@ public class SoulCompostBlock extends Block
         return (getMaxCompostingStage() + 1 - blockState.getValue(COMPOSTING));
     }
 
+    @Environment(EnvType.CLIENT)
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         super.animateTick(state, level, pos, random);
         if (random.nextInt(10) == 0) {
@@ -99,7 +100,7 @@ public class SoulCompostBlock extends Block
     }
 
     @Override
-    public boolean canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction facing, net.minecraftforge.common.IPlantable plantable) {
+    public boolean canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction facing, IPlantable plantable) {
         BlockState plant = plantable.getPlant(level, pos.relative(facing));
         Block plantBlock = plant.getBlock();
         if (plantBlock instanceof FungusBlock) return true;

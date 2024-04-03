@@ -2,6 +2,8 @@ package umpaz.nethersdelight.common.utility;
 
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -13,8 +15,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import umpaz.nethersdelight.NethersDelight;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class NDTextUtils
     /**
      * An alternate version of PotionUtils.addPotionTooltip, that obtains the item's food-property potion effects instead.
      */
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static void addFoodEffectTooltip(ItemStack itemIn, List<Component> lores, float durationFactor) {
         FoodProperties foodStats = itemIn.getItem().getFoodProperties();
         if (foodStats == null) {
