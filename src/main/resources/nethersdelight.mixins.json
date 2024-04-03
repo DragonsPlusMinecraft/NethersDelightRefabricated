@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "nethersdelight.refmap.json",
   "mixins": [
+    "FireBlockMixin",
     "FungusBlockMixin",
     "NetherSproutsBlockMixin",
     "RootsBlockMixin"

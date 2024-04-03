@@ -244,12 +244,6 @@ public class StuffedHoglinBlock extends HorizontalDirectionalBlock {
 		return level.getBlockState(blockpos1).canBeReplaced(context) && level.getWorldBorder().isWithinBounds(blockpos1) ? this.defaultBlockState().setValue(FACING, direction) : null;
 	}
 
-	//TODO: Find if a Fabric equivalent exists
-//	@Override
-//	public PushReaction getPistonPushReaction(BlockState state) {
-//		return PushReaction.DESTROY;
-//	}
-
 	@Override
 	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(worldIn, pos, state, placer, stack);

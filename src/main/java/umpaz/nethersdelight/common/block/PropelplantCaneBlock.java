@@ -3,7 +3,11 @@ package umpaz.nethersdelight.common.block;
 import io.github.fabricators_of_create.porting_lib.block.PlayerDestroyBlock;
 import io.github.fabricators_of_create.porting_lib.common.util.IPlantable;
 import io.github.fabricators_of_create.porting_lib.common.util.PlantType;
+import io.github.fabricators_of_create.porting_lib.mixin.common.PistonMovingBlockEntityMixin;
+import io.github.fabricators_of_create.porting_lib.mixin.common.PistonStructureResolverMixin;
 import io.github.fabricators_of_create.porting_lib.tags.Tags;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
+import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -23,6 +27,12 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.TntBlock;
+import net.minecraft.world.level.block.piston.PistonBaseBlock;
+import net.minecraft.world.level.block.piston.PistonHeadBlock;
+import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
+import net.minecraft.world.level.block.piston.PistonStructureResolver;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -53,6 +63,8 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
                         .setValue(BUD, false)
                         .setValue(CUT, false)
         );
+        FlammableBlockRegistry.getDefaultInstance().add(this, 100, 100);
+        LandPathNodeTypesRegistry.register(this, BlockPathTypes.DAMAGE_OTHER, BlockPathTypes.DANGER_OTHER);
     }
 
     @Override
@@ -130,30 +142,20 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
         super.entityInside(state, level, pos, entity);
     }
 
-    //TODO: Find if a Fabric equivalent exists
-    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-        return true;
+    @Override
+    public void wasExploded(Level level, BlockPos pos, Explosion explosion) {
+        explode(level, pos);
     }
 
-    //TODO: Find if a Fabric equivalent exists
-    public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
-        explode(state, level, pos);
-    }
-
-    //TODO: Find if a Fabric equivalent exists
+    //TODO: Wait until Fabric implement this using BlockState
     public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         if (state.getValue(PEARL)) return 100;
         return 60;
     }
 
-    //TODO: Find if a Fabric equivalent exists
+    //TODO: Wait until Fabric implement this using BlockState
     public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return 100;
-    }
-
-    //TODO: Find if a Fabric equivalent exists
-    public void onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
-        explode(state, level, pos, igniter);
     }
 
     @Override
@@ -177,40 +179,29 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
         super.tick(state, level, pos, randomSource);
     }
 
-    //TODO: Implement this and maybe PR to PortingLib
-//    public static void explodeOnPistonAction(final PistonEvent.Pre event) {
-//        if (!(event.getLevel() instanceof Level level)) return;
-//        if (level.isClientSide) return;
-//
-//        PistonStructureResolver structureResolver = event.getStructureHelper();
-//        if (structureResolver == null) return;
-//
-//        structureResolver.resolve();
-//        structureResolver.getToDestroy().forEach((BlockPos pos) -> {
-//            BlockState posState = level.getBlockState(pos);
-//            if (!(posState.getBlock() instanceof PropelplantCaneBlock propelplantCaneBlock)) return;
-//            propelplantCaneBlock.explode(posState, level, pos);
-//        });
-//    }
-
-    protected void explode(Level level, BlockPos pos) {
-        explode(level, pos, (LivingEntity)null);
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (movedByPiston)
+            this.explode(state, level, pos);
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
-    protected void explode(Level level, BlockPos pos, @Nullable LivingEntity entity) {
+    public void explode(Level level, BlockPos pos) {
+        explode(level, pos, null);
+    }
+
+    public void explode(Level level, BlockPos pos, @Nullable LivingEntity entity) {
         explode(level.getBlockState(pos), level, pos, entity);
     }
 
-    protected void explode(BlockState state, Level level, BlockPos pos) {
-        explode(state, level, pos, (LivingEntity) null);
+    public void explode(BlockState state, Level level, BlockPos pos) {
+        explode(state, level, pos, null);
     }
 
-    protected void explode(BlockState state, Level level, BlockPos pos, @Nullable LivingEntity entity) {
-        if (level.isClientSide) return;
-
-        Explosion explosion = level.explode(entity, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Level.ExplosionInteraction.NONE);
-        //TODO: Find if a Fabric equivalent exists
-        //super.onBlockExploded(state, level, pos, explosion);
+    public void explode(BlockState state, Level level, BlockPos pos, @Nullable LivingEntity entity) {
+        if (level.isClientSide)
+            return;
+        level.explode(entity, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Level.ExplosionInteraction.NONE);
     }
 
     protected InteractionResult harvestPearls(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult context) {
@@ -280,16 +271,6 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         level.setBlock(pos, state.setValue(PEARL, true), 2);
-    }
-
-    //TODO: Find if a Fabric equivalent exists
-    public @Nullable BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
-        return BlockPathTypes.DAMAGE_OTHER;
-    }
-
-    //TODO: Find if a Fabric equivalent exists
-    public @Nullable BlockPathTypes getAdjacentBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob, BlockPathTypes originalType) {
-        return BlockPathTypes.DAMAGE_OTHER;
     }
 
     @Override
