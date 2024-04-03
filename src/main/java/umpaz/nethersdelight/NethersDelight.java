@@ -2,6 +2,7 @@ package umpaz.nethersdelight;
 
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.world.item.crafting.Ingredient;
 import org.slf4j.Logger;
 import umpaz.nethersdelight.common.NDCommonSetup;
 import umpaz.nethersdelight.common.registry.*;

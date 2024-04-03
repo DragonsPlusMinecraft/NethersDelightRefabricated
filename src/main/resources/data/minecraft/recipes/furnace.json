@@ -7,7 +7,13 @@
   ],
   "key": {
     "#": {
-      "tag": "nethersdelight:stone_crafting_materials_no_blackstone"
+      "fabric:type": "fabric:difference",
+      "base": {
+        "tag": "minecraft:stone_crafting_materials"
+      },
+      "subtracted": {
+        "item": "minecraft:blackstone"
+      }
     }
   },
   "result": {

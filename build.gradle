@@ -221,9 +221,8 @@ java {
 }
 
 jar {
-    from("LICENSE") {
-        rename { "${it}_${project.base.archivesName.get()}"}
-    }
+    exclude ".cache"
+    from(["LICENSE_FABRIC", "LICENSE_FORGE", "LICENSING.md"])
 }
 
 // configure the maven publication

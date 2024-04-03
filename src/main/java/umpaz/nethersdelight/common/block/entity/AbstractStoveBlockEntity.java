@@ -26,9 +26,9 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.block.StoveBlock;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 
 public abstract class AbstractStoveBlockEntity<R extends AbstractCookingRecipe, RT extends RecipeType<R>> extends BlockEntity {

@@ -29,7 +29,6 @@ public class NDJEIPlugin implements IModPlugin
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        FDRecipes modRecipes = new FDRecipes();
         registration.addRecipes(NDRecipeTypes.COMPOSITION, ImmutableList.of(new CompositionDummy()));
     }
 
