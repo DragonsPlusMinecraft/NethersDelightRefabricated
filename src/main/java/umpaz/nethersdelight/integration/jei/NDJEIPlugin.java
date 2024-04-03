@@ -14,7 +14,6 @@ import umpaz.nethersdelight.common.registry.NDBlocks;
 import umpaz.nethersdelight.common.registry.NDItems;
 import umpaz.nethersdelight.integration.jei.category.CompositionRecipeCategory;
 import umpaz.nethersdelight.integration.jei.resource.CompositionDummy;
-import vectorwing.farmersdelight.integration.jei.FDRecipes;
 
 @JeiPlugin
 @SuppressWarnings("unused")

@@ -2,7 +2,6 @@ package umpaz.nethersdelight;
 
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.world.item.crafting.Ingredient;
 import org.slf4j.Logger;
 import umpaz.nethersdelight.common.NDCommonSetup;
 import umpaz.nethersdelight.common.registry.*;
@@ -18,6 +17,7 @@ public class NethersDelight implements ModInitializer {
 		NDBlockEntityTypes.BLOCK_ENTITY_TYPES.register();
 		NDFeatures.FEATURES.register();
 		NDCreativeTab.TABS.register();
+		NDBiomeModifiers.init();
 		NDCommonSetup.init();
 	}
 
