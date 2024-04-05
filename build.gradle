@@ -28,7 +28,7 @@ repositories {
     maven { url "https://maven.parchmentmc.org" }
     maven {
         url "https://www.cursemaven.com"
-        allowInsecureProtocol = true
+        allowInsecureProtocol true
     }
     maven {
         url "https://maven.firstdarkdev.xyz/snapshots"
@@ -41,8 +41,8 @@ repositories {
         url "https://api.modrinth.com/maven"
     }
     maven {
-        name = "Greenhouse Maven"
-        url = 'https://maven.greenhouseteam.dev/releases/'
+        name "Greenhouse Maven"
+        url 'https://maven.greenhouseteam.dev/releases/'
     }
     maven {
         name "BlameJared"
@@ -61,13 +61,13 @@ repositories {
         url "https://mvn.devos.one/releases/"
     } // Registrate, Porting Lib, Forge Tags, Milk Lib
     maven {
-        url = "https://jitpack.io/"
+        url "https://jitpack.io/"
     } // for Porting Lib: Fabric ASM
     maven {
         url "https://maven.shedaniel.me/"
     } // REI and deps
     maven {
-        url = "https://maven.terraformersmc.com/"
+        url "https://maven.terraformersmc.com/"
     } // Mod Menu, EMI
     maven {
         url "https://maven.jamieswhiteshirt.com/libs-release"
@@ -134,7 +134,7 @@ var changelogText = changelogFile.exists() ? changelogFile.text : ""
 if (env.MODRINTH_TOKEN) {
     modrinth {
         projectId = modrinth_project_id
-        versionName = "Farmer's Delight Refabricated ${mod_version.split("-")[1]} - ${minecraft_version}"
+        versionName = "Nether's Delight Refabricated ${mod_version.split("-")[1]} - ${minecraft_version}"
         uploadFile = tasks.remapJar
         gameVersions = [minecraft_version]
         loaders = ["fabric", "quilt"]
@@ -145,7 +145,6 @@ if (env.MODRINTH_TOKEN) {
         dependencies {
             required.project "fabric-api"
             required.project "farmers-delight-refabricated"
-            optional.project "crafttweaker"
             optional.project "jei"
             optional.project "rei"
             optional.project "emi"
@@ -166,13 +165,12 @@ if (env.CURSEFORGE_TOKEN) {
             addGameVersion "Quilt"
 
             mainArtifact(tasks.remapJar) {
-                displayName = "Farmer's Delight Refabricated ${mod_version.split("-")[1]} - ${minecraft_version}"
+                displayName = "Nether's Delight Refabricated ${mod_version.split("-")[1]} - ${minecraft_version}"
             }
 
             relations {
                 requiredDependency "fabric-api"
                 requiredDependency "farmers-delight-refabricated"
-                optionalDependency "crafttweaker"
                 optionalDependency "jei"
                 optionalDependency "roughly-enough-items"
                 optionalDependency "emi"
@@ -195,8 +193,7 @@ processResources {
             mod_description      : mod_description,
             mod_credits          : mod_credits,
             mod_homepage         : mod_homepage,
-            mod_github           : mod_github,
-            port_lib_version     : port_lib_version
+            mod_github           : mod_github
     ]
     // setting them as input
     inputs.properties replaceProperties

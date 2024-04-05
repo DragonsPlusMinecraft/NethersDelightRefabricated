@@ -16,7 +16,6 @@ import umpaz.nethersdelight.integration.jei.category.CompositionRecipeCategory;
 import umpaz.nethersdelight.integration.jei.resource.CompositionDummy;
 
 @JeiPlugin
-@SuppressWarnings("unused")
 public class NDJEIPlugin implements IModPlugin
 {
     private static final ResourceLocation ID = new ResourceLocation(NethersDelight.MODID, "jei_plugin");

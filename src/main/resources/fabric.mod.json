@@ -1,4 +1,3 @@
-
 {
   "schemaVersion": 1,
   "id": "${mod_id}",
@@ -20,16 +19,19 @@
   "environment": "*",
   "entrypoints": {
     "main": [
+      "umpaz.nethersdelight.NethersDelight"
     ],
     "client": [
+      "umpaz.nethersdelight.NethersDelightClient"
     ],
     "jei_mod_plugin": [
+      "umpaz.nethersdelight.integration.jei.NDJEIPlugin"
     ],
     "rei_client": [
-    ],
-    "rei_server": [
+      "umpaz.nethersdelight.integration.rei.NDREIClientPlugin"
     ],
     "emi": [
+      "umpaz.nethersdelight.integration.emi.NDEMIPlugin"
     ]
   },
   "mixins": [

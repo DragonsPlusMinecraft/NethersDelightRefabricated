@@ -3,8 +3,6 @@ package umpaz.nethersdelight.common.block;
 import io.github.fabricators_of_create.porting_lib.block.PlayerDestroyBlock;
 import io.github.fabricators_of_create.porting_lib.common.util.IPlantable;
 import io.github.fabricators_of_create.porting_lib.common.util.PlantType;
-import io.github.fabricators_of_create.porting_lib.mixin.common.PistonMovingBlockEntityMixin;
-import io.github.fabricators_of_create.porting_lib.mixin.common.PistonStructureResolverMixin;
 import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
@@ -19,20 +17,14 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.FireBlock;
-import net.minecraft.world.level.block.TntBlock;
-import net.minecraft.world.level.block.piston.PistonBaseBlock;
-import net.minecraft.world.level.block.piston.PistonHeadBlock;
-import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
-import net.minecraft.world.level.block.piston.PistonStructureResolver;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -63,6 +55,7 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
                         .setValue(BUD, false)
                         .setValue(CUT, false)
         );
+        //TODO: Move to BlockState implementation after Fabric done
         FlammableBlockRegistry.getDefaultInstance().add(this, 100, 100);
         LandPathNodeTypesRegistry.register(this, BlockPathTypes.DAMAGE_OTHER, BlockPathTypes.DANGER_OTHER);
     }
@@ -142,11 +135,6 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
         super.entityInside(state, level, pos, entity);
     }
 
-    @Override
-    public void wasExploded(Level level, BlockPos pos, Explosion explosion) {
-        explode(level, pos);
-    }
-
     //TODO: Wait until Fabric implement this using BlockState
     public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         if (state.getValue(PEARL)) return 100;
@@ -179,13 +167,6 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
         super.tick(state, level, pos, randomSource);
     }
 
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        if (movedByPiston)
-            this.explode(state, level, pos);
-        super.onRemove(state, level, pos, newState, movedByPiston);
-    }
-
     public void explode(Level level, BlockPos pos) {
         explode(level, pos, null);
     }
@@ -201,7 +182,13 @@ public class PropelplantCaneBlock extends Block implements IPlantable, Bonemeala
     public void explode(BlockState state, Level level, BlockPos pos, @Nullable LivingEntity entity) {
         if (level.isClientSide)
             return;
-        level.explode(entity, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Level.ExplosionInteraction.NONE);
+        Explosion explosion = level.explode(entity, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, EXPLOSION_LEVEL, false, Level.ExplosionInteraction.NONE);
+        this.onBlockExploded(state, level, pos, explosion);
+    }
+
+    public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
+        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+        this.wasExploded(level, pos, explosion);
     }
 
     protected InteractionResult harvestPearls(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult context) {

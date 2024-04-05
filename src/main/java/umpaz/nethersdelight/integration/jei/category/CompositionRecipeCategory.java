@@ -26,7 +26,7 @@ import umpaz.nethersdelight.common.tag.NDTags;
 import umpaz.nethersdelight.common.utility.NDTextUtils;
 import umpaz.nethersdelight.integration.jei.NDRecipeTypes;
 import umpaz.nethersdelight.integration.jei.resource.CompositionDummy;
-import vectorwing.farmersdelight.FarmersDelight;
+import vectorwing.farmersdelight.common.utility.ClientRenderUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 @MethodsReturnNonnullByDefault
 public class CompositionRecipeCategory implements IRecipeCategory<CompositionDummy>
 {
-    public static final ResourceLocation UID = new ResourceLocation(FarmersDelight.MODID, "composition");
+    public static final ResourceLocation UID = new ResourceLocation(NethersDelight.MODID, "composition");
     private static final int slotSize = 22;
 
     private final Component title;
@@ -102,28 +102,19 @@ public class CompositionRecipeCategory implements IRecipeCategory<CompositionDum
 
     @Override
     public List<Component> getTooltipStrings(@NotNull CompositionDummy recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-        if (inIconAt(40, 38, mouseX, mouseY)) {
+        if (ClientRenderUtils.isCursorInsideBounds(40, 38, 11, 11, mouseX, mouseY)) {
             return ImmutableList.of(translateKey(".light"));
         }
-        if (inIconAt(53, 38, mouseX, mouseY)) {
+        if (ClientRenderUtils.isCursorInsideBounds(53, 38, 11, 11, mouseX, mouseY)) {
             return ImmutableList.of(translateKey(".fluid"));
         }
-        if (inIconAt(67, 38, mouseX, mouseY)) {
+        if (ClientRenderUtils.isCursorInsideBounds(67, 38, 11, 11, mouseX, mouseY)) {
             return ImmutableList.of(translateKey(".accelerators"));
         }
-        if (inIconOn(49, 9, mouseX, mouseY)) {
+        if (ClientRenderUtils.isCursorInsideBounds(49, 9, 16, 19, mouseX, mouseY)) {
             return ImmutableList.of(translateKey(".nether"));
         }
         return Collections.emptyList();
-    }
-
-    private static boolean inIconAt(int iconX, int iconY, double mouseX, double mouseY) {
-        final int icon_size = 11;
-        return iconX <= mouseX && mouseX < iconX + icon_size && iconY <= mouseY && mouseY < iconY + icon_size;
-    }
-
-    private static boolean inIconOn(int iconX, int iconY, double mouseX, double mouseY) {
-        return iconX <= mouseX && mouseX < iconX + 16 && iconY <= mouseY && mouseY < iconY + 19;
     }
 
     private static MutableComponent translateKey(@NotNull String suffix) {
