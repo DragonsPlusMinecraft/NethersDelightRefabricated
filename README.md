@@ -7,7 +7,8 @@
   <img alt="Discord" src="https://img.shields.io/discord/1084792082599772212?color=blue&label=Discord">
 </a>
 <br>
-<img src="https://i.imgur.com/Tn69SDR.png" width="50%" alt="Nether's Delight Refabricated">
+
+![Nether's Delight Refabricated](/banner.png)
 
 ## Overview
 ### 📖 About
@@ -22,7 +23,7 @@ This Addon Mod for Farmer's Delight focuses on giving more content to the Nether
 infernal creatures!
 
 ### 🔨 Required Dependencies:
-- [Farmer's Delight](https://www.curseforge.com/minecraft/mc-mods/farmers-delight-refabricated)
+- [Farmer's Delight Refabricated](https://www.curseforge.com/minecraft/mc-mods/farmers-delight-refabricated)
 
 ### ❔ Questions
 Join our [Discord](https://discord.gg/ABgu4dHnx4) to ask about anything you need help with, or are confused by!
