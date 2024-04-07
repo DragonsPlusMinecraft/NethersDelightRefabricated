@@ -1,22 +1,24 @@
 package umpaz.nethersdelight.common.registry;
 
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
-import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import umpaz.nethersdelight.NethersDelight;
 import umpaz.nethersdelight.common.utility.NDTextUtils;
 
 import java.util.Set;
+import java.util.function.Supplier;
 
 public class NDCreativeTab {
     public static final LazyRegistrar<CreativeModeTab> TABS = LazyRegistrar.create(Registries.CREATIVE_MODE_TAB, NethersDelight.MODID);
 
-    public static final RegistryObject<CreativeModeTab> NETHERS_DELIGHT_TAB = TABS.register("main",
+    public static final Supplier<CreativeModeTab> NETHERS_DELIGHT_TAB = TABS.register("main",
             () -> FabricItemGroup.builder()
                     .title(NDTextUtils.getTranslation("itemGroup.main"))
                     .icon(NDItems.BLACKSTONE_STOVE.get()::getDefaultInstance)
@@ -111,7 +113,7 @@ public class NDCreativeTab {
             .modifyEntriesEvent(CreativeModeTabs.COMBAT)
             .register(NDCreativeTab::acceptCombatContents);
         ItemGroupEvents
-            .modifyEntriesEvent(NETHERS_DELIGHT_TAB.getKey())
+            .modifyEntriesEvent(ResourceKey.create(Registries.CREATIVE_MODE_TAB, new ResourceLocation(NethersDelight.MODID, "main")))
             .register(NDCreativeTab::acceptMainTabContents);
     }
 
