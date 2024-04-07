@@ -1,13 +1,7 @@
 # Changelog
 
-## 4.0 Initial Release
-
-### Additions
-- Added zh_cn translation;
-- Added support for REI and EMI.
-- Added tag support for Create, Create: Craft & Additions and Origins.
+## 4.0.1
+- Minor patch for dependent projects, does not affect gameplay.
 
 ### Changes
-- Moving to the incoming cross-platform tag convention;
-- Reimplemented loot table overrides using `fabric-loot-api`;
-- Reimplemented recipe override for vanilla furnace using `fabric-recipe-api`.
+- Replace RegistryObject with Supplier to support common side dependents.
