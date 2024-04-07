@@ -1,7 +1,6 @@
 # Changelog
 
-## 4.0.1
-- Minor patch for dependent projects, does not affect gameplay.
+## 4.0.2
 
-### Changes
-- Replace RegistryObject with Supplier to support common side dependents.
+### Fixes
+- #1 Crash on startup
