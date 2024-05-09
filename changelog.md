@@ -1,6 +1,9 @@
 # Changelog
 
-## 4.0.2
+## 4.1.0
 
 ### Fixes
-- #1 Crash on startup
+- #4 Strider Slice and Hoglin Hide not dropping
+
+### Additions
+- #3 Mexico Spanish(es_mx) localization by @TheLegendofSaram
