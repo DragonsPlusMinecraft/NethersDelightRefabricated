@@ -1,9 +1,9 @@
 # Changelog
 
-## 4.1.0
+## 4.1.1
 
 ### Fixes
-- #4 Strider Slice and Hoglin Hide not dropping
+- #5 FireBlockMixin and PistonBaseBlockMixin have @Debug annotation in production jar
 
 ### Additions
-- #3 Mexico Spanish(es_mx) localization by @TheLegendofSaram
+- #7 Russian(ru_ru) localization by @mpustovoi
